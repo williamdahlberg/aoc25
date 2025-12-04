@@ -1,25 +1,20 @@
 
-def find_biggest_in_bank(bank):
-    biggest_ix = 0
-    biggest_battery = "0"
-    for ix, battery in enumerate(bank):
-        if battery > biggest_battery:
-            biggest_battery = battery
-            biggest_ix = ix
-        
-        if biggest_battery == 9:
-            break
-    return biggest_ix, biggest_battery
-    
-
-values = []
+jolts = []
 for bank in map(str.strip, open('3.input')):
-    first_big_ix, first_big_value = find_biggest_in_bank(bank)
-    if first_big_ix != len(bank) - 1:
-        second_big_ix, second_big_value = find_biggest_in_bank(bank[first_big_ix + 1:])
-        values.append(int(f"{first_big_value}{second_big_value}"))
-    else:
-        prev_big_ix, prev_big_value = find_biggest_in_bank(bank[:-1])
-        values.append(int(f"{prev_big_value}{first_big_value}"))
+    base_jolt = bank[-12:]
+    jolt = base_jolt
+    min_ix = -1
+    for ix, battery in enumerate(base_jolt):
+        found = False
+        base_bank_ix = len(bank) - 12 + ix
+        for test_ix in range(base_bank_ix - 1, min_ix, -1):
+            if bank[test_ix] >= battery:
+                found = True
+                battery = bank[test_ix]
+                jolt = jolt[:ix] + bank[test_ix] + jolt[ix + 1:]
+                min_ix = test_ix
+        if not found:
+            min_ix = base_bank_ix
 
-print(sum(values))
+    jolts.append(int(jolt))
+print(sum(jolts))
