@@ -4,6 +4,7 @@ grid = {
     for x, n in enumerate(r.strip())
 }
 
+# p2
 def remove(removed = 0):
     t = 0
     for c, n in grid.items():
