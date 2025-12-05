@@ -1,5 +1,5 @@
 ranges, ingredients = [l.split("\n") for l in open("5.input").read().split("\n\n")]
-ranges = sorted([tuple(map(int, r.split("-"))) for r in ranges], key=lambda x: x[0])
+ranges = sorted([tuple(map(int, r.split("-"))) for r in ranges])
 
 # p1
 i = 0
@@ -22,7 +22,7 @@ for i, (a, b) in enumerate(ranges):
     for j, (x, y) in enumerate(ranges[i:]):
         if x <= b:
             merged.add(i + j)
-            b = max(b, y)
+            b = y
 
     new_ranges.append((a, b))
 print(sum([b-a+1 for a, b in new_ranges]))
