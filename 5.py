@@ -2,14 +2,7 @@ ranges, ingredients = [l.split("\n") for l in open("5.input").read().split("\n\n
 ranges = sorted([tuple(map(int, r.split("-"))) for r in ranges])
 
 # p1
-i = 0
-for ingredient in ingredients:
-    for a, b in ranges:
-        if a <= int(ingredient) <= b:
-            i += 1
-            break
-
-print(i)
+print(sum([any([a <= int(ingredient) <= b for a, b in ranges]) for ingredient in ingredients]))
 
 # p2
 merged = set()
@@ -27,3 +20,11 @@ for i, (a, b) in enumerate(ranges):
     new_ranges.append((a, b))
 print(sum([b-a+1 for a, b in new_ranges]))
 
+# p2 again
+total = low = 0
+for a, b in sorted(ranges):
+    low = max(a, low + 1)
+    total += max(b - low + 1, 0)
+    low = b
+
+print(total)
