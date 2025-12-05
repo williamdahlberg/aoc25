@@ -22,7 +22,7 @@ for i, (a, b) in enumerate(ranges):
     for j, (x, y) in enumerate(ranges[i:]):
         if x <= b:
             merged.add(i + j)
-            b = y
+            b = max(b, y)
 
     new_ranges.append((a, b))
 print(sum([b-a+1 for a, b in new_ranges]))
