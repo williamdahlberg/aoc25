@@ -16,8 +16,5 @@ t = 0
 for i, line in enumerate(lines):
     if "+" in line or "*" in line:
         numbers = list(takewhile(lambda x: x.strip(), lines[i+1:]))
-        t += reduce(mul if "*" in line else add, map(int, numbers + [line[:-1]]))
+        t += eval(line[-1].join(numbers + [line[:-1]]))
 print(t)
-
-# p2 oneliner
-print(sum([reduce(mul if "*" in line else add, map(int, list(takewhile(lambda x: x.strip(), lines[i+1:])) + [line[:-1]])) for i, line in enumerate(lines) if "+" in line or "*" in line]))
