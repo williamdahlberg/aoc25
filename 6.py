@@ -10,20 +10,16 @@ for i in range(len(lines[0])):
 print(total)
 
 # p2
-lines = open("6.input").readlines()
+lines = ["".join(s) for s in (zip(*open("6.input").readlines()))]
 tot = curr = 0
-for i in range(len(lines[0]) - 1):
-    if lines[-1][i] in "+*":
+for line in lines:
+    if "+" in line or "*" in line:
         tot += curr
-        op = {"*": mul, "+": add}[lines[-1][i]]
-        curr = {"*": 1, "+": 0}[lines[-1][i]]
-
-    num = ""
-    for j in range(len(lines) - 1):
-        num += lines[j][i]
-    if num.strip():
-        curr = op(curr, int(num))
+        op = add if "+" in line else mul
+        curr = int(line[:-1])
+        continue
+    if line.strip():
+        curr = op(curr, int(line))
 
 tot += curr
-
 print(tot)
