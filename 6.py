@@ -1,3 +1,4 @@
+from itertools import takewhile
 from operator import add, mul
 from functools import reduce
 
@@ -10,16 +11,13 @@ for i in range(len(lines[0])):
 print(total)
 
 # p2
-lines = ["".join(s) for s in (zip(*open("6.input").readlines()))]
-tot = curr = 0
-for line in lines:
+lines = (["".join(s) for s in (zip(*open("6.input").readlines()))])
+t = 0
+for i, line in enumerate(lines):
     if "+" in line or "*" in line:
-        tot += curr
-        op = add if "+" in line else mul
-        curr = int(line[:-1])
-        continue
-    if line.strip():
-        curr = op(curr, int(line))
+        numbers = list(takewhile(lambda x: x.strip(), lines[i+1:]))
+        t += reduce(mul if "*" in line else add, map(int, numbers + [line[:-1]]))
+print(t)
 
-tot += curr
-print(tot)
+# p2 oneliner
+print(sum([reduce(mul if "*" in line else add, map(int, list(takewhile(lambda x: x.strip(), lines[i+1:])) + [line[:-1]])) for i, line in enumerate(lines) if "+" in line or "*" in line]))
