@@ -1,29 +1,32 @@
 
-curr_beams =  set()
+from collections import defaultdict
+
+
+curr_beams =  defaultdict(int)
 splitters = set()
 for y, line in enumerate(open("7.input")):
     for x, char in enumerate(line):
-        if char == "S": curr_beams.add((x + y*1j))
+        if char == "S": curr_beams[(x + y*1j)] = 1
         if char == "^": splitters.add((x + y*1j))
 
 def check(beams):
-    new_beams = set()
+    new_beams = defaultdict(int)
     splits = 0
-    for beam in beams:
-        under = beam + 1j
+    for coord, count in beams.items():
+        under = coord + 1j
         if under in splitters:
-            splits += 1
-            new_beams.add(under + 1)
-            new_beams.add(under - 1)
+            splits += count
+            new_beams[under + 1] += count
+            new_beams[under - 1] += count
         else:
-            new_beams.add(under)
+            new_beams[under] += count
     return splits, new_beams
 
-
+# p2 only
 bottom = int(max([y.imag for y in splitters])) + 1
-splits = 0
+timelines = 1
 for y in range(bottom):
-    s, curr_beams = check(curr_beams)
-    splits += s
+    splits, curr_beams = check(curr_beams)
+    timelines += splits
 
-print(splits)
+print(timelines)
