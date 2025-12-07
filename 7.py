@@ -1,32 +1,16 @@
 
-from collections import defaultdict
+lines = [l.strip() for l in open("7.input")]
+answer = [[1 if char == "S" else 0 for char in lines[0]]]
+for _ in range(len(lines[0])): answer.append([0] * len(lines[0]))
 
-
-curr_beams =  defaultdict(int)
-splitters = set()
-for y, line in enumerate(open("7.input")):
+hit_split = set()
+for y, line in enumerate(lines[1:], 1):
     for x, char in enumerate(line):
-        if char == "S": curr_beams[(x + y*1j)] = 1
-        if char == "^": splitters.add((x + y*1j))
-
-def check(beams):
-    new_beams = defaultdict(int)
-    splits = 0
-    for coord, count in beams.items():
-        under = coord + 1j
-        if under in splitters:
-            splits += count
-            new_beams[under + 1] += count
-            new_beams[under - 1] += count
+        if char == "^":
+            if answer[y-1][x] > 0: hit_split.add((x,y))
+            answer[y][x + 1] += answer[y-1][x]
+            answer[y][x - 1] += answer[y-1][x]
         else:
-            new_beams[under] += count
-    return splits, new_beams
+            answer[y][x] += answer[y-1][x]
 
-# p2 only
-bottom = int(max([y.imag for y in splitters])) + 1
-timelines = 1
-for y in range(bottom):
-    splits, curr_beams = check(curr_beams)
-    timelines += splits
-
-print(timelines)
+print(len(hit_split), sum(answer[-1]))
