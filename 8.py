@@ -2,10 +2,10 @@ from math import dist, prod
 from itertools import combinations
 from operator import itemgetter
 
-points = [tuple(map(int, coords.split(","))) for coords in open("8.input")]
-distances = sorted([(pair, dist(*pair)) for pair in combinations(points, r=2)], key=itemgetter(1))
+points = [eval(coords) for coords in open("8.input")]
+distances = sorted([pair for pair in combinations(points, r=2)], key=lambda p: dist(*p))
 circuits = {frozenset((p,)) for p in points}
-for i, ((a, b), _) in enumerate(distances):
+for i, (a, b) in enumerate(distances):
     matches = set([c for c in circuits if a in c or b in c])
     circuits -= matches
     circuits.add(frozenset.union(*matches))
