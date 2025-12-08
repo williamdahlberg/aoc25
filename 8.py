@@ -1,9 +1,8 @@
-from math import dist
+from math import dist, prod
 from itertools import combinations
-from operator import itemgetter, mul
-from functools import reduce
+from operator import itemgetter
 
-points = [tuple(map(int, coords.split(","))) for coords in open("8.input")]  # from input
+points = [tuple(map(int, coords.split(","))) for coords in open("8.input")]
 distances = sorted([(pair, dist(*pair)) for pair in combinations(points, r=2)], key=itemgetter(1))
 circuits = {frozenset((p,)) for p in points}
 for i, ((a, b), _) in enumerate(distances):
@@ -11,7 +10,7 @@ for i, ((a, b), _) in enumerate(distances):
     circuits -= matches
     circuits.add(frozenset.union(*matches))
     if i == 999:  # p1
-       print(reduce(mul, [len(c) for c in sorted(circuits, key=len, reverse=True)[:3]])) 
+       print(prod([len(c) for c in sorted(circuits, key=len, reverse=True)[:3]]))
     if len(circuits) == 1:  # p2
         print(a[0] * b[0])
         break
