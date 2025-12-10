@@ -1,12 +1,13 @@
+from itertools import combinations
+
 machines = []
 for line in open("10.input"):
     lights, *buttons, joltage = line.split()
     bs = []
     [bs.append(tuple(map(int, b[1:-1].split(",")))) for b in buttons]
     ls = [c == "#" for c in lights[1:-1]]
-    machines.append((ls, bs, joltage))
-
-from itertools import combinations
+    j = tuple(map(int, joltage[1:-1].split(",")))
+    machines.append((ls, bs, j))
 
 def match(ls, c):
     result = [0] * len(ls)
