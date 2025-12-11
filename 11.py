@@ -5,3 +5,11 @@ G = nx.DiGraph(devices)
 
 # p1
 print(len(list(nx.all_simple_paths(G, source="you", target="out"))))
+
+# p1 without nx
+def count(this, curr=1):
+    if this == "out":
+        return curr
+    return sum([count(that) for that in devices[this]])
+
+print(count("you"))
